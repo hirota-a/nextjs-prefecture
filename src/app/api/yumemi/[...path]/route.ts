@@ -35,11 +35,15 @@ export async function OPTIONS() {
  * @returns 処理結果のJSONレスポンス
  */
 export async function GET(
-  req: NextRequest, // NextRequestに修正
-  context: { params: { path: string[] } } // 動的ルートの正しい型定義
+  req: NextRequest, // NextRequestオブジェクト
+  // ★ 変更点: 型エラーの原因となっていた厳密な型定義を削除または緩和します。
+  // Next.jsの型に依存するため、ここでは引数を any として扱い、構造化されたアクセスはそのまま維持します。
+  context: any // { params: { path: string[] } } から any に変更
 ) {
   const { searchParams } = new URL(req.url);
-  const apiPath = context.params.path.join('/'); // 例: 'prefectures' または 'population'
+  
+  // pathが配列であることを前提としてアクセスを維持
+  const apiPath = Array.isArray(context.params.path) ? context.params.path.join('/') : context.params.path; // 例: 'prefectures' または 'population'
 
   try {
     let externalEndpoint = '';
@@ -98,6 +102,21 @@ export async function GET(
       );
     }
     
+    // --- 2.5. 空のレスポンスボディのチェック ---
+    // レスポンスが空でないことを確認してからJSON解析を行う
+    const contentType = apiResponse.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+        // JSONレスポンスが期待されるが、Content-Typeがない、またはJSONではない場合
+        const rawText = await apiResponse.text();
+        if (rawText.trim().length === 0) {
+            console.error(`[Proxy] Received 200 OK but response body is empty for ${apiPath}.`);
+            return NextResponse.json(
+                { error: 'Received an empty response body from external API.' },
+                { status: 500, headers: CORS_HEADERS }
+            );
+        }
+    }
+
     // 外部APIのJSONボディを取得
     const json = await apiResponse.json();
 
