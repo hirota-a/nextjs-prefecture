@@ -1,141 +1,69 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
+/* src/app/page.module.css */
+/*メインページ（Homeコンポーネント）の専用スタイルシートです。 */
 
-  --text-primary: #000;
-  --text-secondary: #666;
+/*
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
+メインページのレイアウトスタイル
+*/
 
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+.container {
+/* PC向け: グリッドレイアウトで左右に分ける */
+display: grid;
+/* 左: 都道府県リスト (固定幅)、右: グラフ (可変) */
+grid-template-columns: 300px 1fr;
+min-height: calc(100vh - 58px); /*ヘッダーの高さを引く */
+max-width: 1400px;
+margin: 0 auto;
+padding: 0;
+border-left: 1px solid var(--color-border);
+border-right: 1px solid var(--color-border);
 }
 
-.main {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+.prefectureSection {
+border-right: 1px solid var(--color-border);
+background-color: var(--color-background-light);
+overflow-y: auto; /* スクロール可能に */
+height: calc(100vh - 58px); /* ヘッダーの高さを引いて全画面表示 */
+position: sticky;
+top: 0;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+.graphSection {
+padding: 0;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+.loadingContainer, .errorContainer {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 40px;
+text-align: center;
+font-size: 1.2rem;
+color: var(--color-text-dark);
+min-height: calc(100vh - 58px);
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+.errorContainer p {
+color: #d32f2f; /* 赤色 */
+margin-top: 10px;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
+/* タブレット・スマホ向けレスポンシブ対応 */
+@media (max-width: 900px) {
+.container {
+/* タブレット・スマホ向け: 都道府県リストを上に、グラフを下に (1列) */
+grid-template-columns: 1fr;
+max-width: 100%;
+border-left: none;
+border-right: none;
+min-height: auto;
 }
 
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
+.prefectureSection {
+border-right: none;
+border-bottom: 1px solid var(--color-border);
+height: auto; /* 画面高に合わせるのをやめる */
+position: relative; /* sticky解除 */
 }
-
-.ctas a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
-}
-
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--button-secondary-border);
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-}
-
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
-
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
 }

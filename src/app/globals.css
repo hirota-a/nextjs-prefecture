@@ -1,42 +1,32 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* src/app/globals.css*/
+/* アプリケーション全体に適用されるグローバルCSSです。*/
+/* リセットCSS (モダンブラウザ向け) */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*{/** (アスタリスク): これは「ユニバーサルセレクタ」と呼ばれ、HTMLドキュメント内のすべての要素を対象とします*/
+box-sizing: border-box;
+padding: 0;
+margin: 0;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+max-width: 100vw;
+overflow-x: hidden;
+font-family: 'Inter', sans-serif;
+color: var(--color-text-dark);
+background-color: #ffffff;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* root 変数 (テーマカラーなど) */
+:root {
+--color-primary: #1e88e5; /* テーマカラーの青 */
+--color-text-dark: #333333;
+--color-text-light: #555555;
+--color-border: #e0e0e0;
+--color-background-light: #f7f7f7;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+color: inherit;
+text-decoration: none;
 }
